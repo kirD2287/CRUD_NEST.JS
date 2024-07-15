@@ -1,0 +1,55 @@
+services:
+  main:
+    container_name: main
+    build:
+      context: .
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - '8080:8080'
+      - '9229:9229'
+    command: sh -c "npx prisma migrate dev --name init && npm run start:dev"
+    depends_on:
+      - postgres
+    restart: always
+   
+
+  postgres:
+    container_name: postgres
+    image: postgres:16
+    env_file:
+      - .env
+    environment:
+      PG_DATA: /var/lib/postgresql/data
+      POSTGRES_DB: 'users'
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: '123865'
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'dj_pro98@mail.ru'
+      PGADMIN_DEFAULT_PASSWORD: '123865'
+    env_file:
+      - .env
+    ports:
+      - '80:80'
+    depends_on:
+      - postgres
+    restart: always
+    
+
+volumes:
+  pgdata:
+
+
+
