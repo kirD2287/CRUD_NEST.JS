@@ -19,8 +19,10 @@ import { ProjectService } from './project.service'
 import { CreateProjectDto } from './dto/project.dto'
 import { JWTAuthGuard } from 'src/auth/jwt-auth-guard'
 
+
+
 @ApiTags('Проекты')
-@Controller('/project')
+@Controller('/projects')
 export class ProjectController {
     constructor(private projectService: ProjectService) {}
     @ApiOperation({ summary: 'Получение списка проектов' })

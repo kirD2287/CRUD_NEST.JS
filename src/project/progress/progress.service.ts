@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { PrismaService } from 'src/prisma.serviсe'
+import { PrismaService } from 'src/prisma.service'
 import { SwapProgressesDto } from './dto/progresses.dto'
 import { CreateProjectDto } from '../dto/project.dto'
 

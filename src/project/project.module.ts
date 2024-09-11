@@ -6,7 +6,8 @@ import { ProgressController } from './progress/progress.controller'
 import { TaskController } from './progress/task/task.controller'
 import { ProgressService } from './progress/progress.service'
 import { TaskService } from './progress/task/task.service'
-import { PrismaService } from 'src/prisma.serviсe'
+import { PrismaService } from 'src/prisma.service'
+
 
 @Module({
     controllers: [ProjectController, ProgressController, TaskController],

@@ -1,13 +1,18 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common'
 import { CreateUserDto } from './dto/create-user.dto'
-import { PrismaService } from 'src/prisma.serviсe'
+import { PrismaService } from 'src/prisma.service'
 import { RolesService } from 'src/roles/roles.service'
+import { CACHE_MANAGER } from '@nestjs/cache-manager'
+import { Cache } from 'cache-manager'
+
 
 @Injectable()
 export class UsersService {
     constructor(
+        @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
         private prisma: PrismaService,
-        private rolesService: RolesService
+        private rolesService: RolesService,
+       
     ) {}
     async createUser(dto: CreateUserDto) {
         const existingUser = await this.prisma.users.findUnique({
@@ -25,7 +30,7 @@ export class UsersService {
                 password: dto.password,
             },
         })
-        const role = await this.rolesService.getRoleByValue('ADMIN')
+        const role = await this.rolesService.getRoleByValue('Admin')
         await this.prisma.UsersRoles.create({
             data: {
                 userId: user.id,
@@ -37,6 +42,11 @@ export class UsersService {
     }
 
     async getAllUsers() {
+        const cacheKey = 'users'
+        const cachedUsers = await this.cacheManager.get(cacheKey)
+        if (cachedUsers) {
+            return cachedUsers
+        }
         const users = await this.prisma.users.findMany({
             include: {
                 roles: {
@@ -46,6 +56,7 @@ export class UsersService {
                 },
             },
         })
+        await this.cacheManager.set(cacheKey, users)
         return users
     }
     async getUserByEmail(email: string) {

@@ -8,7 +8,6 @@ import {
     Post,
     Put,
     UseGuards,
-    UsePipes,
 } from '@nestjs/common'
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -18,6 +17,8 @@ import { Roles } from 'src/auth/roles-auth-decorator'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { JWTAuthGuard } from 'src/auth/jwt-auth-guard'
 import { Users } from '@prisma/client'
+
+
 
 @ApiTags('CRUD Пользователей')
 @Controller('/users')
@@ -32,7 +33,7 @@ export class UsersController {
     }
     @ApiOperation({ summary: 'Получение списка пользователей' })
     @ApiResponse({ status: 200, type: [User] })
-    @Roles('ADMIN')
+    @Roles('Admin')
     @UseGuards(JWTAuthGuard, RolesGuard)
     @Get()
     getAll() {
