@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common'
 import { CreateUserDto } from './dto/create-user.dto'
-import { PrismaService } from 'src/prisma.service'
-import { RolesService } from 'src/roles/roles.service'
+import { PrismaService } from '../prisma.service'
+import { RolesService } from '../roles/roles.service'
 import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import { Cache } from 'cache-manager'
 

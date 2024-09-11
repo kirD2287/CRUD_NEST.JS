@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { CreateUserDto } from 'src/users/dto/create-user.dto'
-import { UsersService } from 'src/users/users.service'
+import { UsersService } from '../users/users.service'
 import * as bcrypt from 'bcryptjs'
 import { User } from 'src/users/user.model'
 
@@ -38,7 +38,7 @@ export class AuthService {
         return this.generateToken(user)
     }
 
-    private async generateToken(user: User) {
+    async generateToken(user: User) {
         const roles = await this.usersService.getUserRoles(user.id)
         const payload = {
             email: user.email,
@@ -50,7 +50,7 @@ export class AuthService {
         }
     }
 
-    private async validateUser(userDto: CreateUserDto) {
+    async validateUser(userDto: CreateUserDto) {
         const user = await this.usersService.getUserByEmail(userDto.email)
         const passwordEquals = await bcrypt.compare(
             userDto.password,
